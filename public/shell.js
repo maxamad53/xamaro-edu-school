@@ -18,12 +18,10 @@ body.dark #main>div{background:#1e293b;color:#e2e8f0}
 const MENU = [
   { k: "home", i: "🏠", t: "Dashboard", r: "*" },
   { k: "schools", i: "🏫", t: "Dugsiyada", r: ["super_admin"] },
-  { k: "students", i: "🎓", t: "Ardayda", r: ["school_admin", "principal", "receptionist", "teacher"] },
-  { k: "att", i: "✅", t: "Imaanshaha", r: ["school_admin", "principal", "teacher"] },
-  { k: "res", i: "📄", t: "Natiijooyinka", r: ["student"] },
-  { k: "myatt", i: "📅", t: "Imaanshahayga", r: ["student"] },
+  { k: "students", i: "🎓", t: "Ardayda", r: ["school_admin"] },
+  { k: "att", i: "✅", t: "Imaanshaha", r: ["school_admin"] },
   { k: "users", i: "👥", t: "Isticmaalayaasha", r: ["school_admin"] },
-  { k: "exams", i: "📝", t: "Imtixaanka", r: ["school_admin", "principal", "teacher"] },
+  { k: "exams", i: "📝", t: "Imtixaanka", r: ["school_admin"] },
   { k: "setup", i: "🏫", t: "Fasallada & Maaddooyinka", r: ["school_admin"] },
   { k: "reports", i: "📋", t: "Warbixinaha", r: ["school_admin", "super_admin"] },
   { k: "set", i: "⚙️", t: "Settings", r: "*" }
@@ -55,7 +53,7 @@ const toggle = o => { $("drawer").classList.toggle("open", o); $("shade").classL
 async function show(k) {
   $("main").innerHTML = "";
   document.querySelectorAll(".mi[data-k]").forEach(x => x.classList.toggle("on", x.dataset.k === k));
-  $("ttl").textContent = t(k);
+  $("ttl").textContent = t(k); $("back").style.display = k === "home" ? "none" : "block";
   toggle(false);
   try { await SECT[k](); } catch (e) { card(esc(e.message)); }
 }
@@ -64,9 +62,9 @@ function build() {
   const a = document.createElement("div");
   a.id = "app";
   const items = MENU.filter(x => x.r === "*" || x.r.includes(me.role)).map(x => "<div class='mi' data-k='" + x.k + "'>" + x.i + " " + t(x.k) + "</div>").join("");
-  a.innerHTML = "<div class='top'><button id='hb'>☰</button><b id='ttl'></b></div><div id='shade'></div><div id='drawer'><h1 class='dh'>🏫 Smart School</h1>" + items + "<div class='mi' id='lo'>🚪 " + t("out") + "</div></div><div id='main'></div>";
+  a.innerHTML = "<div class='top'><button id='hb'>☰</button><button id='back' style='display:none'>←</button><b id='ttl'></b></div><div id='shade'></div><div id='drawer'><h1 class='dh'>🏫 Smart School</h1>" + items + "<div class='mi' id='lo'>🚪 " + t("out") + "</div></div><div id='main'></div>";
   document.body.appendChild(a);
-  $("hb").onclick = () => toggle(true);
+  $("hb").onclick = () => toggle(true); $("back").onclick = () => show("home");
   $("shade").onclick = () => toggle(false);
   a.querySelectorAll(".mi[data-k]").forEach(x => x.onclick = () => show(x.dataset.k));
   $("lo").onclick = () => { localStorage.removeItem("t"); location.reload(); };

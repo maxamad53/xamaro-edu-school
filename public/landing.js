@@ -5,6 +5,7 @@
   const V2 = "Education is the foundation of social development. It empowers individuals with knowledge, skills and opportunities to build a better future.";
   const TX = {
     so: { sub: "Xafiiska Waxbarashada Degmada Xamaro", login: "Gal", signup: "Is-diiwaangeli", pill: "KU SOO DHAWOW XAMARO EDU", cta: "Bilow hadda", vt: "QIIMAHA WAXBARASHADA", msgs: ["Aqoontu waa iftiinka bulshada.", "Waxbarashaduna waa jidka horumarka.", "Waxbarasho maanta, horumar berri."] },
+    am: { sub: "የሐማሮ ወረዳ ትምህርት ጽሕፈት ቤት", login: "ግባ", signup: "ይመዝገቡ", pill: "ወደ XAMARO EDU እንኳን በደህና መጡ", cta: "አሁን ይጀምሩ", vt: "የትምህርት ጥቅም", msgs: ["እውቀት የማህበረሰብ ብርሃን ነው።", "ትምህርት የእድገት መንገድ ነው።", "ዛሬ ተማር፣ ነገ እደግ።"] },
     en: { sub: "Xamaro District Education Office", login: "Login", signup: "Sign Up", pill: "WELCOME TO XAMARO EDU", cta: "Get started", vt: "THE VALUE OF EDUCATION", msgs: ["Knowledge is the light of society.", "Education is the path to progress.", "Learn today, progress tomorrow."] }
   };
   const IC = "<svg width='30' height='30' viewBox='0 0 24 24' fill='none' stroke='#E6C36A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'>";
@@ -15,7 +16,7 @@
   function render() {
     const x = TX[LANG] || TX.so;
     root.innerHTML = "<nav class='ln-nav'><img class='ln-logo' src='/logo.png' alt='XAMARO EDU'><div class='ln-brand'>XAMARO EDU</div>" +
-      "<button class='ln-btn' id='lnl'>" + x.login + "</button><button class='ln-btn gold' id='lns'>" + x.signup + "</button><button class='ln-btn' id='lng'>" + (LANG === "en" ? "SO" : "EN") + "</button></nav>" +
+      "<button class='ln-btn' id='lnl'>" + x.login + "</button><button class='ln-btn gold' id='lns'>" + x.signup + "</button><button class='ln-btn' id='lng'>" + ({ so: "አማ", am: "EN", en: "SO" }[LANG] || "አማ") + "</button></nav>" +
       "<section class='ln-hero'><img class='ln-hlogo' src='/logo.png' alt=''><br><span class='ln-pill'>" + x.pill + "</span><div class='ln-h1'><span></span><i></i></div><div class='ln-msg' id='lnm'></div>" +
       "<div class='ln-cta'><button class='ln-btn gold' id='lnc'>" + x.cta + "</button></div><div class='ln-img' id='lni'><img src='/hero.jpg' alt=''></div></section>" +
       "<section class='ln-val ln-rise'><h2>" + x.vt + "</h2><p>" + V1 + "</p><p class='en'>" + V2 + "</p><div class='ln-icons'>" + ICONS + "</div></section>" +
@@ -55,7 +56,7 @@
     $("lnl").onclick = () => openA(false);
     $("lns").onclick = () => openA(true);
     $("lnc").onclick = () => openA(false);
-    $("lng").onclick = () => { setLang(LANG === "en" ? "so" : "en"); start(); };
+    $("lng").onclick = () => { setLang(({ so: "am", am: "en", en: "so" })[LANG] || "so"); start(); };
     const img = root.querySelector(".ln-img img");
     img.onerror = () => { img.remove(); $("lni").innerHTML = ICONS; $("lni").querySelectorAll("svg").forEach(s => { s.setAttribute("width", 52); s.setAttribute("height", 52); }); };
     root.querySelectorAll(".ln-logo,.ln-hlogo").forEach(g => { g.onerror = () => { g.style.display = "none"; }; });
