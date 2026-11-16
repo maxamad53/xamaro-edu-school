@@ -8,7 +8,7 @@ migrate();
 const saEmail=(process.env.SUPER_ADMIN_EMAIL||"").trim().toLowerCase();
 const saPassword=process.env.SUPER_ADMIN_PASSWORD||"";
 const saName=(process.env.SUPER_ADMIN_NAME||"Super Admin").trim();
-if(saEmail&&saPassword.length>=12){const role=db.prepare("SELECT id FROM roles WHERE name='super_admin'").get();const old=db.prepare("SELECT id,role_id FROM users WHERE lower(email)=?").get(saEmail);if(!old){db.prepare("INSERT INTO users (school_id,role_id,full_name,email,password_hash) VALUES (NULL,?,?,?,?)").run(role.id,saName,saEmail,bcrypt.hashSync(saPassword,12));console.log("Super Admin created from environment");}else if(old.role_id!==role.id){console.log("Configured email belongs to another role; no changes made");}}
+if(saEmail&&saPassword.length>=12){const role=db.prepare("SELECT id FROM roles WHERE name='super_admin'").get();const old=db.prepare("SELECT id,role_id FROM users WHERE lower(email)=?").get(saEmail);if(!old){db.prepare("INSERT INTO users (school_id,role_id,full_name,email,password_hash) VALUES (NULL,?,?,?,?)").run(role.id,saName,saEmail,bcrypt.hashSync(saPassword,12));console.log("Super Admin created from environment");}else if(old.role_id===role.id){db.prepare("UPDATE users SET password_hash=?,full_name=? WHERE id=?").run(bcrypt.hashSync(saPassword,12),saName,old.id);console.log("Super Admin password updated from environment");}else{console.log("Configured email belongs to another role; no changes made");}}
 
 const app = express();
 app.set("trust proxy", 1);
